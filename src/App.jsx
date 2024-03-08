@@ -1,6 +1,9 @@
 import PropTypes from 'prop-types'
+import { useState } from 'react';
 
 const App = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+
   const stories = [
     {
       title: 'React',
@@ -20,25 +23,27 @@ const App = () => {
     },
   ];
 
+  const getFilteredList = () => {
+    return stories.filter((story) => (story.title.toLowerCase().includes(searchTerm)));
+  }
+
   return(
-  <div>
-    <h1>My Hacker Stories</h1>
+    <div>
+      <h1>My Hacker Stories</h1>
 
-    <Search />
+      <Search setSearchTerm={setSearchTerm}/>
 
-    <hr />
+      <hr />
 
-    <List list={stories}/>
-  </div>
+      <List list={getFilteredList}/>
+    </div>
   );
 };
 
-const Search = () => {
+const Search = (props) => {
+
   const handleChange = (event) => {
-    // synthetic event
-    console.log(event);
-    // value of target (here: input HTML element)
-    console.log(event.target.value);
+    props.setSearchTerm(event.target.value)
   };
 
   return (
@@ -49,36 +54,43 @@ const Search = () => {
   );
 };
 
-const List = (props) => (
-  <ul>
-    {props.list.map((item) => (
-      <Item key={item.objectID} item={item}></Item>
-    ))}
-  </ul>
-);
+const List = (props) => {
+  return(
+    <ul>
+      {(props.list()).map((item) => (
+        <Item key={item.objectID} {...item}></Item>
+      ))}
+    </ul>
+  )
+};
 
-const Item = (props) => {
-  const item = props.item;
+const Item = ({title, url, author, num_comments, points}) => {
   return(
     <li>
       <span>
-        <a href={item.url}>{item.title}</a>
+        <a href={url}>{title}</a>
       </span>
-      <span>{item.author}</span>
-      <span>{item.num_comments}</span>
-      <span>{item.points}</span>
+      <span>{author}</span>
+      <span>{num_comments}</span>
+      <span>{points}</span>
     </li>
   )
 }
 
 List.propTypes = {
-  list: PropTypes.array
+  list: PropTypes.func
+}
+
+Search.propTypes = {
+  setSearchTerm: PropTypes.func
 }
 
 Item.propTypes = {
-  item: PropTypes.any,
-  key: PropTypes.number
-
+  title: PropTypes.string,
+  url: PropTypes.string,
+  author: PropTypes.string,
+  num_comments: PropTypes.number,
+  points: PropTypes.number
 }
 
 export default App;
