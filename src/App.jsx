@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types'
-import { useState } from 'react';
+import { useState } from 'react'
 
 const App = () => {
-  const defaultSearchTerm = "React";
-  const [searchTerm, setSearchTerm] = useState(defaultSearchTerm);
+  const defaultSearchTerm = 'React'
+  const [searchTerm, setSearchTerm] = useState(defaultSearchTerm)
 
   const stories = [
     {
@@ -22,51 +22,57 @@ const App = () => {
       points: 5,
       objectID: 1,
     },
-  ];
+  ]
 
   const getFilteredList = () => {
-    return stories.filter((story) => (story.title.toLowerCase().includes(searchTerm.toLowerCase())));
+    return stories.filter((story) =>
+      story.title.toLowerCase().includes(searchTerm.toLowerCase())
+    )
   }
-
-  return(
-    <div>
-      <h1>My Hacker Stories</h1>
-
-      <Search value={searchTerm} setSearchTerm={setSearchTerm}/>
-
-      <hr />
-
-      <List list={getFilteredList}/>
-    </div>
-  );
-};
-
-const Search = (props) => {
-
-  const handleChange = (event) => {
-    props.setSearchTerm(event.target.value)
-  };
 
   return (
     <div>
-      <label htmlFor="search">Search: </label>
-      <input value={props.value} id="search" type="text" onChange={handleChange} />
+      <h1>My Hacker Stories</h1>
+
+      <Search value={searchTerm} setSearchTerm={setSearchTerm} />
+
+      <hr />
+
+      <List list={getFilteredList} />
     </div>
-  );
-};
+  )
+}
+
+const Search = (props) => {
+  const handleChange = (event) => {
+    props.setSearchTerm(event.target.value)
+  }
+
+  return (
+    <div>
+      <label htmlFor='search'>Search: </label>
+      <input
+        value={props.value}
+        id='search'
+        type='text'
+        onChange={handleChange}
+      />
+    </div>
+  )
+}
 
 const List = (props) => {
-  return(
+  return (
     <ul>
-      {(props.list()).map((item) => (
+      {props.list().map((item) => (
         <Item key={item.objectID} {...item}></Item>
       ))}
     </ul>
   )
-};
+}
 
-const Item = ({title, url, author, num_comments, points}) => {
-  return(
+const Item = ({ title, url, author, num_comments, points }) => {
+  return (
     <li>
       <span>
         <a href={url}>{title}</a>
@@ -79,12 +85,12 @@ const Item = ({title, url, author, num_comments, points}) => {
 }
 
 List.propTypes = {
-  list: PropTypes.func
+  list: PropTypes.func,
 }
 
 Search.propTypes = {
   setSearchTerm: PropTypes.func,
-  value: PropTypes.string
+  value: PropTypes.string,
 }
 
 Item.propTypes = {
@@ -92,7 +98,7 @@ Item.propTypes = {
   url: PropTypes.string,
   author: PropTypes.string,
   num_comments: PropTypes.number,
-  points: PropTypes.number
+  points: PropTypes.number,
 }
 
-export default App;
+export default App
