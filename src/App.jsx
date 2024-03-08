@@ -2,7 +2,8 @@ import PropTypes from 'prop-types'
 import { useState } from 'react';
 
 const App = () => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const defaultSearchTerm = "React";
+  const [searchTerm, setSearchTerm] = useState(defaultSearchTerm);
 
   const stories = [
     {
@@ -24,14 +25,14 @@ const App = () => {
   ];
 
   const getFilteredList = () => {
-    return stories.filter((story) => (story.title.toLowerCase().includes(searchTerm)));
+    return stories.filter((story) => (story.title.toLowerCase().includes(searchTerm.toLowerCase())));
   }
 
   return(
     <div>
       <h1>My Hacker Stories</h1>
 
-      <Search setSearchTerm={setSearchTerm}/>
+      <Search value={searchTerm} setSearchTerm={setSearchTerm}/>
 
       <hr />
 
@@ -49,7 +50,7 @@ const Search = (props) => {
   return (
     <div>
       <label htmlFor="search">Search: </label>
-      <input id="search" type="text" onChange={handleChange} />
+      <input value={props.value} id="search" type="text" onChange={handleChange} />
     </div>
   );
 };
@@ -82,7 +83,8 @@ List.propTypes = {
 }
 
 Search.propTypes = {
-  setSearchTerm: PropTypes.func
+  setSearchTerm: PropTypes.func,
+  value: PropTypes.string
 }
 
 Item.propTypes = {
